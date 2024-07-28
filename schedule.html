@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule a Tour</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="schedule-page">
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" id="home-btn">Home</a>
+            </nav>
+            <h1>Schedule a Tour</h1>
+            <h6>Monday-Friday from 8-5pm</h6>
+        </div>
+    </header>
+    <main>
+        <div class="schedule-container">
+            <h2>Caregiver Details</h2>
+            <form id="schedule-form" action="https://us-central1-YOUR_PROJECT_ID.cloudfunctions.net/api/schedule" method="POST">
+                <!-- Caregiver Details -->
+                <div class="form-group">
+                    <label for="caregiver-first-name">Caregiver First Name:</label>
+                    <input type="text" id="caregiver-first-name" name="caregiver-first-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="caregiver-last-name">Caregiver Last Name:</label>
+                    <input type="text" id="caregiver-last-name" name="caregiver-last-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="other-caregiver-name">Other Caregiver First & Last Name:</label>
+                    <input type="text" id="other-caregiver-name" name="other-caregiver-name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="tour-date">Choose your tour date:</label>
+                    <input type="date" id="tour-date" name="tour-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="start-date">Desired Start Date:</label>
+                    <input type="date" id="start-date" name="start-date" required>
+                </div>
+
+                <!-- Days Seeking Enrollment -->
+                <h2>Days Seeking Enrollment</h2>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="days" value="Monday"> Monday
+                    </label>
+                    <label>
+                        <input type="checkbox" name="days" value="Tuesday"> Tuesday
+                    </label>
+                    <label>
+                        <input type="checkbox" name="days" value="Wednesday"> Wednesday
+                    </label>
+                    <label>
+                        <input type="checkbox" name="days" value="Thursday"> Thursday
+                    </label>
+                    <label>
+                        <input type="checkbox" name="days" value="Friday"> Friday
+                    </label>
+                </div>
+
+                <!-- Child Information -->
+                <h2>Child Information</h2>
+                <div class="form-group">
+                    <label for="child-first-name">Child's First Name:</label>
+                    <input type="text" id="child-first-name" name="child-first-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="child-last-name">Child's Last Name:</label>
+                    <input type="text" id="child-last-name" name="child-last-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="child-gender">Child's Gender:</label>
+                    <input type="text" id="child-gender" name="child-gender" required>
+                </div>
+                <div class="form-group">
+                    <label for="child-birthday">Child's Birthday:</label>
+                    <input type="date" id="child-birthday" name="child-birthday" required>
+                </div>
+                <div class="form-group">
+                    <label for="desired-start-date">Desired Start Date:</label>
+                    <input type="date" id="desired-start-date" name="desired-start-date" required>
+                </div>
+                <div class="form-group">
+                    <button type="button" id="add-child-btn">Add Additional Child</button>
+                </div>
+
+                <div id="additional-children-container"></div>
+
+                <!-- Additional Information -->
+                <h2>Additional Information</h2>
+                <div class="form-group">
+                    <label for="most-important-qualities">What would you say are the MOST IMPORTANT QUALITIES you are looking for in a child care program?</label>
+                    <textarea id="most-important-qualities" name="most-important-qualities" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="how-did-you-hear">How Did You Hear About Us?</label>
+                    <input type="text" id="how-did-you-hear" name="how-did-you-hear" required>
+                </div>
+                <div class="form-group">
+                    <label for="additional-comments">Feel free to share any further notes about your enrollment needs:</label>
+                    <textarea id="additional-comments" name="additional-comments" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+            <div id="form-result"></div>
+        </div>
+    </main>
+    <script src="form.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addChildBtn = document.getElementById('add-child-btn');
+            const container = document.getElementById('additional-children-container');
+
+            addChildBtn.addEventListener('click', function() {
+                const childCount = container.childElementCount + 1;
+                const childDiv = document.createElement('div');
+                childDiv.classList.add('additional-child');
+                childDiv.innerHTML = `
+                    <div class="form-group">
+                        <h3>Additional Child ${childCount}</h3>
+                        <label for="child-first-name-${childCount}">Child's First Name:</label>
+                        <input type="text" id="child-first-name-${childCount}" name="child-first-name-${childCount}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="child-last-name-${childCount}">Child's Last Name:</label>
+                        <input type="text" id="child-last-name-${childCount}" name="child-last-name-${childCount}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="child-gender-${childCount}">Child's Gender:</label>
+                        <input type="text" id="child-gender-${childCount}" name="child-gender-${childCount}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="child-birthday-${childCount}">Child's Birthday:</label>
+                        <input type="date" id="child-birthday-${childCount}" name="child-birthday-${childCount}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="desired-start-date-${childCount}">Desired Start Date:</label>
+                        <input type="date" id="desired-start-date-${childCount}" name="desired-start-date-${childCount}" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="remove-child-btn">Remove Child</button>
+                    </div>
+                `;
+                container.appendChild(childDiv);
+
+                childDiv.querySelector('.remove-child-btn').addEventListener('click', function() {
+                    container.removeChild(childDiv);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
